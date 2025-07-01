@@ -1,0 +1,53 @@
+services:
+  backend:
+    build: 
+      context: ./MERN/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" 
+    networks:
+      - mern_network
+    env_file:
+      - ./MERN/backend/.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: 
+      context: ./MERN/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"  
+    networks:
+      - mern_network
+    env_file:
+      - ./MERN/frontend/.env
+      
+  mongodb:
+    image: mongo:latest  
+    ports:
+      - "27017:27017"  
+    networks:
+      - mern_network
+    volumes:
+      - mongo-data:/data/db  
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - mern_network
+
+networks:
+  mern_network:
+    driver: bridge 
+
+volumes:
+  mongo-data:
+    driver: local  # Persist MongoDB data locally
