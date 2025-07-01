@@ -6,7 +6,7 @@ export const parseError = (error) => {
     const errorMessage = doc.querySelector('pre');
 
     if(errorMessage) {
-        // Extract the error message using regexx
+        // Extract the error message using regex
         const errorText = errorMessage.textContent.match(/^Error:\s*(.*?)(?=\s*at)/);
         if(errorText && errorText[1]) {
             return errorText[1].trim();
