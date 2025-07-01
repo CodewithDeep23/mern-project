@@ -7,7 +7,6 @@ body * {
     scrollbar-width: none;
 }
 
-/* Request Progressbar styles */
 #nprogress .bar {
     background: red !important;
 }
